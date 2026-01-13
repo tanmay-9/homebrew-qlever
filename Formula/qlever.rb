@@ -1,8 +1,11 @@
 class Qlever < Formula
-  desc "High-performance SPARQL engine for RDF knowledge graphs"
+  desc "High-performance graph database implementing the RDF and SPARQL standards"
   homepage "https://github.com/ad-freiburg/qlever"
   version "0.5.38"
   license "Apache-2.0"
+  
+  url "https://github.com/tanmay-9/qlever/releases/download/v0.5.38/qlever-0.5.38-macos-arm64.tar.gz"
+  sha256 "0dfa1e79b8b1840d5db5920cf115df9ae56f96961b31419ee7da0c02dc2ec3ad"
 
   depends_on "boost"                                                                                                                                                                                                                        
   depends_on "icu4c@77"                                                                                                                                                                                                                     
@@ -10,9 +13,6 @@ class Qlever < Formula
   depends_on "openssl@3" 
   depends_on arch: :arm64
   depends_on :macos
-
-  url "https://github.com/tanmay-9/qlever/releases/download/v0.5.38/qlever-0.5.38-macos-arm64.tar.gz"
-  sha256 "0dfa1e79b8b1840d5db5920cf115df9ae56f96961b31419ee7da0c02dc2ec3ad"
 
   def install
     bin.install "qlever-loader"
@@ -30,8 +30,8 @@ class Qlever < Formula
     EOS
   end
 
-  test do
-    assert_match "QLever", shell_output("#{bin}/qlever-server --help 2>&1", 1)
-    assert_match "QLever", shell_output("#{bin}/qlever-loader --help 2>&1", 1)
-  end
+  test do                                                                                                                                                                                                                                     
+    assert_match version.to_s, shell_output("#{bin}/qlever-loader --version")                                                                                                                                                                 
+    assert_match version.to_s, shell_output("#{bin}/qlever-server --version")                                                                                                                                                                 
+  end 
 end

@@ -1,0 +1,55 @@
+name: Test Homebrew Formula
+
+on:
+  push:
+    branches: [master, main]
+    tags: ['v*']
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:  # Allow manual triggers
+
+jobs:
+  test-homebrew-install:
+    runs-on: macos-14
+
+    steps:
+      - name: Check runner architecture
+        run: |
+          echo "Architecture: $(uname -m)"
+          echo "macOS version: $(sw_vers -productVersion)"
+          echo "Runner: ${{ matrix.os }}"
+
+      - name: Update Homebrew
+        run: brew update
+
+      - name: Tap qlever repository
+        run: brew tap tanmay-9/qlever
+
+      - name: Install qlever
+        run: brew install tanmay-9/qlever/qlever
+
+      - name: Verify binaries are installed
+        run: |
+          which qlever-server
+          which qlever-loader
+
+      - name: Test qlever-server
+        run: |
+          qlever-server --version
+          qlever-server --help
+
+      - name: Test qlever-loader
+        run: |
+          qlever-loader --version
+          qlever-loader --help
+
+      - name: Verify dynamic libraries resolve
+        run: |
+          echo "=== qlever-server dependencies ==="
+          otool -L $(which qlever-server)
+          echo ""
+          echo "=== qlever-loader dependencies ==="
+          otool -L $(which qlever-loader)
+
+      - name: Run Homebrew formula tests
+        run: brew test tanmay-9/qlever/qlever
