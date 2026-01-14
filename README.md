@@ -6,5 +6,5 @@ You can add the custom tap and install the `qlever-loader` and `qlever-server` b
 
 ```zsh
 brew tap tanmay-9/qlever
-brew install qlever
+brew install tanmay-9/qlever/qlever
 ```
