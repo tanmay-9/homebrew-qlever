@@ -21,7 +21,7 @@ jobs:
       - name: Check if update is needed
         id: version-check
         run: |
-          # Get current version from formula (sed works on both macOS and Linux)
+          # Get current version from formula
           CURRENT_VERSION=$(sed -n 's/.*qlever-\([0-9]*\.[0-9]*\.[0-9]*\)\.tar\.gz.*/\1/p' Formula/qlever-control.rb | head -1)
           echo "Current version: $CURRENT_VERSION"
 

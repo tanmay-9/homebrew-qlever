@@ -1,11 +1,6 @@
 name: Test Homebrew Formula
 
 on:
-  push:
-    branches: [master, main]
-    tags: ['v*']
-  pull_request:
-    branches: [master, main]
   workflow_dispatch:  # Allow manual triggers
 
 jobs:
@@ -23,33 +18,52 @@ jobs:
         run: brew update
 
       - name: Tap qlever repository
-        run: brew tap tanmay-9/qlever
+        run: brew tap qlever-dev/qlever
 
       - name: Install qlever
-        run: brew install tanmay-9/qlever/qlever
+        run: brew install qlever-dev/qlever/qlever
+
+      - name: Run Homebrew formula tests
+        run: brew test qlever-dev/qlever/qlever
 
       - name: Verify binaries are installed
         run: |
           which qlever-server
-          which qlever-loader
+          which qlever-index
+          which qlever
+
+      - name: Test qlever-index
+        run: |
+          qlever-index --version
+          qlever-index --help
 
       - name: Test qlever-server
         run: |
           qlever-server --version
           qlever-server --help
-
-      - name: Test qlever-loader
+      
+      - name: Test qlever-control
         run: |
-          qlever-loader --version
-          qlever-loader --help
+          qlever --version
+          qlever --help
 
       - name: Verify dynamic libraries resolve
         run: |
           echo "=== qlever-server dependencies ==="
           otool -L $(which qlever-server)
           echo ""
-          echo "=== qlever-loader dependencies ==="
-          otool -L $(which qlever-loader)
+          echo "=== qlever-index dependencies ==="
+          otool -L $(which qlever-index)
 
-      - name: Run Homebrew formula tests
-        run: brew test tanmay-9/qlever/qlever
+      - name: Test qlever script for olympics dataset, without Docker
+        timeout-minutes: 3
+        run: |
+          mkdir -p qlever-indices/olympics && cd $_
+          qlever setup-config olympics
+          qlever get-data
+          qlever index --system native --index-binary qlever-index
+          qlever start --system native --server-binary qlever-server
+          qlever status
+          qlever query
+          qlever stop
+          ls -lh
