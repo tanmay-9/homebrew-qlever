@@ -4,8 +4,8 @@ class QleverControl < Formula
   desc "Command-line tool for QLever graph database"
   homepage "https://github.com/ad-freiburg/qlever-control"
   license "Apache-2.0"
-  url "https://files.pythonhosted.org/packages/fb/46/fc020063ce0168e40c7c9664782cb1f40bef3c08f0ee12999313e2fccc0f/qlever-0.5.42.tar.gz"
-  sha256 "0a0b91d44a391f6836419d4ed74bf71336ad845f61f0e7b8c508718182dc8a6d"
+  url "https://files.pythonhosted.org/packages/07/e4/310b27cda7008699f2f73b8a124c905bb1c3966bd6de32d91b7021259c36/qlever-0.5.43.tar.gz"
+  sha256 "ee8cdf9f56b3b9bb6be834a9788a47ba8722dbb233eafb0e32810fe30b5f70de"
 
   depends_on "python3"
 
