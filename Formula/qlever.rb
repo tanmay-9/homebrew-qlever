@@ -5,7 +5,7 @@ class Qlever < Formula
   license "Apache-2.0"
   
   url "https://github.com/tanmay-9/qlever/releases/download/v0.5.42/qlever-0.5.42-macos-arm64.tar.gz"
-  sha256 "6d8f73f1cc08dd742b3c28e336ed262dfa781689a55500b193e159bea97c1ee6"
+  sha256 "af98547615dfb5aeee072c9c547d6a910ed55cdc6f08de6da5e4d9621e7b9e48"
 
   depends_on "boost"
   depends_on "icu4c"
