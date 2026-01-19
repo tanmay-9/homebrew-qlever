@@ -21,8 +21,8 @@ jobs:
       - name: Check if update is needed
         id: version-check
         run: |
-          # Get current version from formula
-          CURRENT_VERSION=$(grep -oP 'qlever-\K[0-9]+\.[0-9]+\.[0-9]+' Formula/qlever-control.rb | head -1)
+          # Get current version from formula (sed works on both macOS and Linux)
+          CURRENT_VERSION=$(sed -n 's/.*qlever-\([0-9]*\.[0-9]*\.[0-9]*\)\.tar\.gz.*/\1/p' Formula/qlever-control.rb | head -1)
           echo "Current version: $CURRENT_VERSION"
 
           # Get latest version from PyPI
