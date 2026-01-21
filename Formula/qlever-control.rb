@@ -1,7 +1,7 @@
 class QleverControl < Formula
   include Language::Python::Virtualenv
 
-  desc "Command-line tool for controlling (almost) everything QLever (graph database) can do"
+  desc "Command-line tool for QLever graph database"
   homepage "https://github.com/ad-freiburg/qlever-control"
   license "Apache-2.0"
   url "https://files.pythonhosted.org/packages/07/e4/310b27cda7008699f2f73b8a124c905bb1c3966bd6de32d91b7021259c36/qlever-0.5.43.tar.gz"
@@ -77,7 +77,9 @@ class QleverControl < Formula
   def install
     virtualenv_create(libexec, "python3")
     virtualenv_install_with_resources
-    ENV["QLEVER_ARGCOMPLETE_ENABLED"] = "1"
+    # Replace bin/qlever with a wrapper script that sets the env var
+    rm bin/"qlever"
+    (bin/"qlever").write_env_script libexec/"qlever", QLEVER_ARGCOMPLETE_ENABLED: "1"
   end
 
   test do
