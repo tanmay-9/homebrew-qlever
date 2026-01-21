@@ -7,8 +7,8 @@ class Qlever < Formula
   url "https://github.com/tanmay-9/qlever/releases/download/v0.5.42/qlever-0.5.42-macos-arm64.tar.gz"
   sha256 "af98547615dfb5aeee072c9c547d6a910ed55cdc6f08de6da5e4d9621e7b9e48"
 
-  depends_on "boost"
-  depends_on "icu4c"
+  depends_on "boost@1.90"
+  depends_on "icu4c@78"
   depends_on "jemalloc"
   depends_on "openssl@3"
   depends_on "qlever-control"
@@ -25,7 +25,7 @@ class Qlever < Formula
       QLever binaries have been installed:
         - qlever-index: for loading and indexing data
         - qlever-server: start a SPARQL endpoint and query data
-        - qlever: CLI tool for managing QLever instances
+        - qlever: CLI tool for controlling (almost) everything QLever can do
 
       For more information: https://github.com/ad-freiburg/qlever-control
     EOS
