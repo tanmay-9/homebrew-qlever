@@ -61,9 +61,9 @@ jobs:
           mkdir -p qlever-indices/olympics && cd $_
           qlever setup-config olympics
           qlever get-data
-          qlever index --system native --index-binary qlever-index
-          qlever start --system native --server-binary qlever-server
-          qlever status --cmdline-regex "^(qlever-server|qlever-index)" 
+          qlever index --system native
+          qlever start --system native
+          qlever status
           qlever query
-          qlever stop --cmdline-regex "qlever-server.* -i [^ ]*%%NAME%%" 
+          qlever stop
           ls -lh
