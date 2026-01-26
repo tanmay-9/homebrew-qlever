@@ -74,14 +74,21 @@ class QleverControl < Formula
     sha256 "1b62b6884944a57dbe321509ab94fd4d3b307075e0c2eae991ac71ee15ad38ed"
   end
 
+  # Disable argcomplete warning for Homebrew installations
+  patch do
+    url "https://raw.githubusercontent.com/qlever-dev/homebrew-qlever/main/patches/disable-argcomplete-warning.patch"
+    sha256 "a82be5733a8d5a3ff61ff7b91573282559b4d339cc2cdb6685b2df38e75b39f4"
+  end
+
+  # Disable argcomplete warning for Homebrew installations
+  patch do
+    url "https://raw.githubusercontent.com/qlever-dev/homebrew-qlever/main/patches/qleverfile-use-native-system.patch"
+    sha256 "0898ae33df2b722f8144dffb370e5b49269c84b3406afdc076ec055c31897436"
+  end
+
   def install
     virtualenv_create(libexec, "python3")
     virtualenv_install_with_resources
-
-    # Change default SYSTEM from docker to native for Homebrew installations
-    Dir.glob(libexec/"lib/python*/site-packages/qlever/Qleverfiles/*").each do |f|
-      inreplace f, /^(\s*SYSTEM\s*=\s*)docker\s*$/i, "\\1native"
-    end
   end
 
   test do
