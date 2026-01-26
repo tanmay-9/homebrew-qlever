@@ -49,13 +49,13 @@ jobs:
 
       - name: Verify Qleverfiles have SYSTEM = native
         run: |
-          # Find the qlever package location
-          QLEVER_PKG=$(python3 -c "import qlever; print(qlever.__path__[0])")
-          echo "qlever package location: $QLEVER_PKG"
+          # Find Qleverfiles in Homebrew's virtualenv
+          QLEVER_FILES=$(brew --prefix qlever-control)/libexec/lib/python*/site-packages/qlever/Qleverfiles
+          echo "Qleverfiles location: $QLEVER_FILES"
 
           # Check all Qleverfiles for SYSTEM setting
           echo "Checking Qleverfiles for SYSTEM = native..."
-          for f in "$QLEVER_PKG"/Qleverfiles/*; do
+          for f in $QLEVER_FILES/*; do
             if [ -f "$f" ]; then
               echo "Checking: $f"
               if grep -qi "^\s*SYSTEM\s*=\s*docker" "$f"; then
