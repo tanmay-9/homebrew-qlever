@@ -47,6 +47,31 @@ jobs:
           qlever --version
           qlever --help
 
+      - name: Verify Qleverfiles have SYSTEM = native
+        run: |
+          # Find the qlever package location
+          QLEVER_PKG=$(python3 -c "import qlever; print(qlever.__path__[0])")
+          echo "qlever package location: $QLEVER_PKG"
+
+          # Check all Qleverfiles for SYSTEM setting
+          echo "Checking Qleverfiles for SYSTEM = native..."
+          for f in "$QLEVER_PKG"/Qleverfiles/*; do
+            if [ -f "$f" ]; then
+              echo "Checking: $f"
+              if grep -qi "^\s*SYSTEM\s*=\s*docker" "$f"; then
+                echo "ERROR: Found SYSTEM = docker in $f"
+                grep -i "SYSTEM" "$f"
+                exit 1
+              fi
+              if grep -qi "^\s*SYSTEM\s*=\s*native" "$f"; then
+                echo "OK: SYSTEM = native"
+              else
+                echo "WARNING: No SYSTEM setting found in $f"
+              fi
+            fi
+          done
+          echo "All Qleverfiles verified!"
+
       - name: Verify dynamic libraries resolve
         run: |
           echo "=== qlever-server dependencies ==="
@@ -55,14 +80,20 @@ jobs:
           echo "=== qlever-index dependencies ==="
           otool -L $(which qlever-index)
 
-      - name: Test qlever script for olympics dataset, without Docker
+      - name: Test qlever script for olympics dataset (native is default)
         timeout-minutes: 3
         run: |
           mkdir -p qlever-indices/olympics && cd $_
           qlever setup-config olympics
+
+          # Verify the generated Qleverfile has SYSTEM = native
+          echo "Generated Qleverfile SYSTEM setting:"
+          grep -i "SYSTEM" Qleverfile
+
+          # Run without --system flag to verify native is the default
           qlever get-data
-          qlever index --system native
-          qlever start --system native
+          qlever index
+          qlever start
           qlever status
           qlever query
           qlever stop

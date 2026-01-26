@@ -77,6 +77,11 @@ class QleverControl < Formula
   def install
     virtualenv_create(libexec, "python3")
     virtualenv_install_with_resources
+
+    # Change default SYSTEM from docker to native for Homebrew installations
+    Dir.glob(libexec/"lib/python*/site-packages/qlever/Qleverfiles/*").each do |f|
+      inreplace f, /^(\s*SYSTEM\s*=\s*)docker\s*$/i, "\\1native"
+    end
   end
 
   test do
